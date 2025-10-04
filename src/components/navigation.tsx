@@ -133,29 +133,31 @@ export default function Navigation() {
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-full bg-white">
-              <div className="flex flex-col gap-6 mt-8">
-                <div className="flex items-center gap-0.5 mb-4">
-                  <div className="bg-white rounded-full p-2.5">
+            <SheetContent side="right" className="w-full bg-white p-6">
+              <div className="flex flex-col h-full">
+                {/* Logo Section - Centered */}
+                <div className="flex justify-center items-center gap-2 pb-8 border-b border-gray-100">
+                  <div className="bg-white rounded-full p-2">
                     <Image
                       src="/assets/logo.png"
                       alt="OrchesAI Logo"
-                      width={36}
-                      height={36}
-                      className="h-9 w-9"
+                      width={32}
+                      height={32}
+                      className="h-8 w-8"
                     />
                   </div>
-                  <span className="text-[22px] font-medium text-black tracking-tight">
+                  <span className="text-[20px] font-semibold text-black tracking-tight">
                     OrchesAI
                   </span>
                 </div>
 
-                <nav className="flex flex-col gap-1">
+                {/* Navigation Items - Better Spacing */}
+                <nav className="flex flex-col gap-2 py-6 flex-1">
                   {navigationItems.map((item) => (
                     <a
                       key={item.label}
                       href={item.href}
-                      className="text-[17px] text-gray-800 hover:text-black py-3 transition-colors"
+                      className="text-[18px] font-medium text-gray-900 hover:text-[#0071E3] py-4 px-4 rounded-lg hover:bg-gray-50 transition-all duration-200"
                       onClick={(e) => {
                         e.preventDefault()
                         setIsMobileMenuOpen(false)
@@ -170,11 +172,14 @@ export default function Navigation() {
                   ))}
                 </nav>
 
-                <Button asChild className="bg-[#0071E3] hover:bg-[#0051D5] text-white rounded-full mt-4 text-[14px] font-normal">
-                  <a href="https://wa.me/6285161912446" target="_blank" rel="noopener noreferrer">
-                    Get Started
-                  </a>
-                </Button>
+                {/* CTA Button - Sticky Bottom */}
+                <div className="pt-4 border-t border-gray-100">
+                  <Button asChild className="w-full bg-[#0071E3] hover:bg-[#0051D5] text-white rounded-full h-12 text-[16px] font-medium">
+                    <a href="https://wa.me/6285161912446" target="_blank" rel="noopener noreferrer">
+                      Get Started
+                    </a>
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
