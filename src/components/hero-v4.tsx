@@ -53,7 +53,7 @@ export default function HeroV4() {
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.3])
 
   return (
-    <section ref={containerRef} className="min-h-screen flex items-center justify-center bg-white pt-32 pb-24 relative overflow-hidden">
+    <section ref={containerRef} className="min-h-screen flex items-center justify-center pt-32 pb-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, oklch(0.985 0.004 75) 100%)' }}>
       {/* Noise Grain Background */}
       <NoiseGrain className="absolute inset-0" />
 
@@ -168,7 +168,7 @@ export default function HeroV4() {
           >
             <Button
               size="lg"
-              className="bg-[#0071E3] hover:bg-[#0051D5] text-white px-7 py-3 rounded-full font-normal text-[17px] transition-colors h-12 shadow-sm hover:shadow-md"
+              className="bg-[#0071E3] hover:bg-[#0051D5] text-white px-9 py-4 rounded-full font-medium text-[18px] transition-all h-14 shadow-lg hover:shadow-xl"
               asChild
             >
               <a href="https://wa.me/6285161912446" target="_blank" rel="noopener noreferrer">
@@ -191,25 +191,20 @@ export default function HeroV4() {
                 demoSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
             >
-              Try Demo Bot →
+              Try Demo Agent →
             </Button>
           </motion.div>
         </motion.div>
 
-        {/* Trust indicators with Urgency */}
+        {/* Trust indicators */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="space-y-3"
         >
           <p className="text-[13px] text-[#86868B]">
             Free consultation 30 menit • 30-day warranty • Anda tidak perlu mengerti teknis
           </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-[13px] font-medium text-green-700">Hanya 5 slot tersedia bulan ini</span>
-          </div>
         </motion.div>
       </motion.div>
     </section>

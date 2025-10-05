@@ -33,7 +33,7 @@ const steps = [
 
 export default function HowItWorksCompact() {
   return (
-    <section id="how-it-works" className="py-24 px-6 bg-white">
+    <section id="how-it-works" className="py-28 px-6 bg-cream">
       <div className="max-w-6xl mx-auto">
         {/* Section Header with Friction Removal */}
         <div className="text-center mb-16">
@@ -49,11 +49,11 @@ export default function HowItWorksCompact() {
           {/* Friction Removal Badge */}
           <ScrollReveal delay={0.4}>
             <div className="inline-flex items-center gap-6 px-6 py-3 bg-blue-50 border border-blue-200 rounded-full">
-              <span className="text-[14px] font-medium text-blue-900">✓ Tanpa coding</span>
+              <span className="text-[14px] font-medium text-blue-900">Tanpa coding</span>
               <span className="text-blue-300">|</span>
-              <span className="text-[14px] font-medium text-blue-900">✓ Kami yang handle semua</span>
+              <span className="text-[14px] font-medium text-blue-900">Kami yang handle semua</span>
               <span className="text-blue-300">|</span>
-              <span className="text-[14px] font-medium text-blue-900">✓ Pakai tools Anda yang sekarang</span>
+              <span className="text-[14px] font-medium text-blue-900">Pakai tools Anda yang sekarang</span>
             </div>
           </ScrollReveal>
         </div>

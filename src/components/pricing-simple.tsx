@@ -12,7 +12,7 @@ export default function PricingSimple() {
   const yearOneCost = 1000000 + (500000 * 12) + (maintenanceCost * 12)
 
   return (
-    <section id="pricing" className="py-24 px-6 bg-white">
+    <section id="pricing" className="py-28 px-6 bg-cream">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">

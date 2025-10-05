@@ -48,6 +48,7 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
+  --cream: oklch(0.98 0.01 85);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -151,4 +152,10 @@
 .animate-scroll-left:hover,
 .animate-scroll-right:hover {
   animation-play-state: paused;
+}
+
+/* Custom cream background for sections */
+.bg-cream {
+  background-color: oklch(0.96 0.008 75);
+  border-bottom: 1px solid oklch(0.94 0.01 75);
 }
