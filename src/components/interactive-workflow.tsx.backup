@@ -1,0 +1,1084 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  MessageSquare,
+  Send,
+  Bot,
+  FileText,
+  DollarSign,
+  CheckCircle,
+  Clock,
+  Zap,
+  Download,
+  Eye,
+  ArrowRight,
+  Loader2,
+  Sparkles,
+  Calculator,
+  Calendar
+} from 'lucide-react'
+
+// Scenario templates
+const scenarioTemplates = [
+  {
+    id: 'website',
+    title: 'Website Development',
+    example: 'Halo, saya butuh website untuk toko online saya yang jual fashion. Budget sekitar 15-20 juta. Kapan bisa mulai?',
+    estimatedPrice: 17500000,
+    timeline: '4-6 weeks',
+    features: ['E-commerce platform', 'Payment gateway', 'Admin dashboard', 'Mobile responsive', 'SEO optimization']
+  },
+  {
+    id: 'mobile-app',
+    title: 'Mobile App Development',
+    example: 'Saya mau bikin aplikasi mobile untuk delivery makanan. Fitur seperti Gojek tapi khusus makanan. Budget maksimal 50 juta.',
+    estimatedPrice: 45000000,
+    timeline: '8-12 weeks',
+    features: ['iOS & Android app', 'Real-time tracking', 'Payment integration', 'Push notifications', 'Admin panel']
+  },
+  {
+    id: 'digital-marketing',
+    title: 'Digital Marketing Campaign',
+    example: 'Butuh digital marketing untuk brand skincare baru. Target audience wanita 20-35 tahun. Budget 10 juta per bulan.',
+    estimatedPrice: 10000000,
+    timeline: '3 months campaign',
+    features: ['Social media management', 'Google Ads', 'Content creation', 'Influencer outreach', 'Monthly reporting']
+  },
+  {
+    id: 'branding',
+    title: 'Branding & Logo Design',
+    example: 'Startup tech baru butuh complete branding package. Logo, brand guideline, website, dan marketing materials. Budget 25 juta.',
+    estimatedPrice: 25000000,
+    timeline: '6-8 weeks',
+    features: ['Logo design', 'Brand guidelines', 'Business cards', 'Website design', 'Marketing materials']
+  }
+]
+
+// Processing steps for animation
+const processingSteps = [
+  { id: 1, text: 'Menganalisis pesan client...', icon: <MessageSquare className="w-4 h-4" /> },
+  { id: 2, text: 'Mengekstrak requirements...', icon: <Bot className="w-4 h-4" /> },
+  { id: 3, text: 'Mendeteksi budget range...', icon: <Calculator className="w-4 h-4" /> },
+  { id: 4, text: 'Memilih template proposal...', icon: <FileText className="w-4 h-4" /> },
+  { id: 5, text: 'Menghitung pricing...', icon: <DollarSign className="w-4 h-4" /> },
+  { id: 6, text: 'Generating proposal...', icon: <Sparkles className="w-4 h-4" /> }
+]
+
+interface InteractiveWorkflowProps {
+  onTimeSaved?: (minutes: number) => void;
+}
+
+export default function InteractiveWorkflow({ onTimeSaved }: InteractiveWorkflowProps) {
+  const [currentStep, setCurrentStep] = useState<'input' | 'processing' | 'proposal' | 'approval' | 'invoice' | 'whatsapp' | 'complete'>('input')
+  const [selectedTemplate, setSelectedTemplate] = useState(scenarioTemplates[0])
+  const [clientMessage, setClientMessage] = useState(selectedTemplate.example)
+  const [processingIndex, setProcessingIndex] = useState(0)
+  const [generatedProposal, setGeneratedProposal] = useState<any>(null)
+  const [generatedInvoice, setGeneratedInvoice] = useState<any>(null)
+  const [timeElapsed, setTimeElapsed] = useState(0)
+  const [startTime, setStartTime] = useState<number>(0)
+  const [whatsappMessages, setWhatsappMessages] = useState<any[]>([])
+  const [isTyping, setIsTyping] = useState(false)
+  const [deliveryStatus, setDeliveryStatus] = useState<'sending' | 'delivered' | 'read'>('sending')
+
+  // Timer for automation
+  useEffect(() => {
+    if (currentStep === 'processing') {
+      setStartTime(Date.now())
+      const timer = setInterval(() => {
+        setTimeElapsed(prev => prev + 0.1)
+      }, 100)
+      return () => clearInterval(timer)
+    }
+  }, [currentStep])
+
+
+  // Processing animation
+  useEffect(() => {
+    if (currentStep === 'processing') {
+      const interval = setInterval(() => {
+        setProcessingIndex(prev => {
+          if (prev >= processingSteps.length - 1) {
+            setTimeout(() => {
+              generateProposal()
+              setCurrentStep('proposal')
+            }, 1000)
+            return prev
+          }
+          return prev + 1
+        })
+      }, 800)
+      return () => clearInterval(interval)
+    }
+  }, [currentStep])
+
+  const generateProposal = () => {
+    // Parse the client message and generate proposal
+    const proposal = {
+      id: `PROP-${Date.now()}`,
+      clientName: 'Client',
+      projectType: selectedTemplate.title,
+      estimatedPrice: selectedTemplate.estimatedPrice,
+      timeline: selectedTemplate.timeline,
+      features: selectedTemplate.features,
+      createdAt: new Date().toLocaleDateString('id-ID'),
+      validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('id-ID')
+    }
+    setGeneratedProposal(proposal)
+  }
+
+  const generateInvoice = () => {
+    if (!generatedProposal) return
+
+    const invoice = {
+      id: `INV-${Date.now()}`,
+      proposalId: generatedProposal.id,
+      clientName: generatedProposal.clientName,
+      projectType: generatedProposal.projectType,
+      amount: generatedProposal.estimatedPrice,
+      downPayment: Math.round(generatedProposal.estimatedPrice * 0.5),
+      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('id-ID'),
+      createdAt: new Date().toLocaleDateString('id-ID'),
+      paymentLink: `https://payment.orchesai.com/invoice/${Date.now()}`
+    }
+    setGeneratedInvoice(invoice)
+
+    // Calculate time saved
+    const automationTime = (Date.now() - startTime) / 1000 / 60 // in minutes
+    const manualTime = 45 // manual process typically takes 45 minutes
+    const timeSaved = manualTime - automationTime
+
+    if (onTimeSaved) {
+      onTimeSaved(Math.max(timeSaved, 40)) // Always show significant time savings
+    }
+  }
+
+  const handleSendRequest = () => {
+    setCurrentStep('processing')
+    setProcessingIndex(0)
+    setTimeElapsed(0)
+  }
+
+  const handleApproval = () => {
+    setCurrentStep('approval')
+
+    // First show proposal delivery to WhatsApp
+    setWhatsappMessages([
+      {
+        id: 0,
+        type: 'incoming',
+        text: clientMessage,
+        timestamp: new Date(Date.now() - 300000), // 5 minutes ago
+        status: 'read',
+        isOriginal: true
+      }
+    ])
+
+    // AI sends proposal to WhatsApp
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 1,
+        type: 'system',
+        text: '🤖 OrchesAI Assistant activated\n📄 Generating custom proposal...',
+        timestamp: new Date(Date.now() - 240000), // 4 minutes ago
+        status: 'system'
+      }])
+    }, 500)
+
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 2,
+        type: 'outgoing',
+        text: `Halo! Terima kasih untuk inquiry ${selectedTemplate.title} nya.
+
+Berikut proposal custom untuk project Anda:
+
+📋 **Project**: ${generatedProposal.projectType}
+💰 **Investment**: Rp ${generatedProposal.estimatedPrice.toLocaleString('id-ID')}
+⏱️ **Timeline**: ${generatedProposal.timeline}
+
+Proposal lengkap sudah saya kirim via attachment.
+
+---
+🤖 *Auto-generated by OrchesAI Assistant*`,
+        timestamp: new Date(Date.now() - 180000), // 3 minutes ago
+        status: 'read'
+      }])
+    }, 1000)
+
+    // Send proposal document
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 3,
+        type: 'outgoing',
+        text: null,
+        document: {
+          name: `Proposal_${generatedProposal.id}.pdf`,
+          size: '245 KB',
+          type: 'pdf'
+        },
+        timestamp: new Date(Date.now() - 120000), // 2 minutes ago
+        status: 'read'
+      }])
+    }, 1500)
+
+    // Client approval response
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 4,
+        type: 'incoming',
+        text: 'Wah mantap nih proposalnya! 😍 Ok deal, saya approve semuanya. Pricing juga oke banget. Tolong kirim invoice nya ya buat DP 50%',
+        timestamp: new Date(Date.now() - 60000), // 1 minute ago
+        status: 'read'
+      }])
+
+      // Generate invoice after approval
+      setTimeout(() => {
+        generateInvoice()
+        setCurrentStep('invoice')
+      }, 1000)
+    }, 2000)
+  }
+
+  const sendInvoiceToWhatsApp = () => {
+    setCurrentStep('whatsapp')
+    setDeliveryStatus('sending')
+
+    // Continue from existing conversation - don't reset messages
+
+    // AI processing notification
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 5,
+        type: 'system',
+        text: '🤖 OrchesAI Processing approval\n⚡ Auto-generating invoice...',
+        timestamp: new Date(),
+        status: 'system'
+      }])
+    }, 300)
+
+    // Simulate sending process with personalized message
+    setTimeout(() => {
+      const personalizedMessage = generatePersonalizedMessage()
+      setWhatsappMessages(prev => [...prev, {
+        id: 6,
+        type: 'outgoing',
+        text: personalizedMessage,
+        timestamp: new Date(),
+        status: 'sending'
+      }])
+      setIsTyping(true)
+    }, 1500)
+
+    // Update message status to delivered
+    setTimeout(() => {
+      setWhatsappMessages(prev => prev.map(msg =>
+        msg.id === 6 ? { ...msg, status: 'delivered' } : msg
+      ))
+      setDeliveryStatus('delivered')
+      setIsTyping(false)
+    }, 3000)
+
+    // AI document generation notification
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 7,
+        type: 'system',
+        text: '📄 AI generating invoice PDF...\n🔗 Payment link created automatically',
+        timestamp: new Date(),
+        status: 'system'
+      }])
+    }, 3300)
+
+    // Show invoice document in chat
+    setTimeout(() => {
+      setWhatsappMessages(prev => [...prev, {
+        id: 8,
+        type: 'outgoing',
+        text: null,
+        document: {
+          name: `Invoice_${generatedInvoice?.id}.pdf`,
+          size: '156 KB',
+          type: 'pdf'
+        },
+        timestamp: new Date(),
+        status: 'delivered'
+      }])
+    }, 4000)
+
+    // Client reads messages (slower to let user see the messages)
+    setTimeout(() => {
+      setWhatsappMessages(prev => prev.map(msg =>
+        ({ ...msg, status: 'read' })
+      ))
+      setDeliveryStatus('read')
+    }, 6000)
+
+    // Client typing response (give more time to read)
+    setTimeout(() => {
+      setIsTyping(true)
+    }, 8000)
+
+    // Client response (longer typing simulation)
+    setTimeout(() => {
+      setIsTyping(false)
+      setWhatsappMessages(prev => [...prev, {
+        id: 9,
+        type: 'incoming',
+        text: 'Terima kasih! Invoice sudah saya terima. Untuk DP 50% akan saya transfer hari ini. Kapan project bisa dimulai?',
+        timestamp: new Date(),
+        status: 'read'
+      }])
+
+      // AI completion notification (slower reveal)
+      setTimeout(() => {
+        setWhatsappMessages(prev => [...prev, {
+          id: 10,
+          type: 'system',
+          text: `✅ OrchesAI workflow completed successfully!\n⚡ Complete conversation: Inquiry → Proposal → Approval → Invoice\n💫 Total time: ${timeElapsed.toFixed(1)}s (vs 2-3 hours manual)`,
+          timestamp: new Date(),
+          status: 'system'
+        }])
+      }, 2000)
+    }, 11000)
+
+    // Mark as complete (longer delay to let users enjoy the WhatsApp experience)
+    setTimeout(() => {
+      setCurrentStep('complete')
+    }, 15000) // Extended from 10s to 15s total
+  }
+
+  const generatePersonalizedMessage = () => {
+    const clientName = extractClientName(clientMessage)
+    const projectType = selectedTemplate.title.toLowerCase()
+
+    return `Halo ${clientName}! 😊
+
+Terima kasih sudah approve proposal untuk project ${projectType} kita.
+
+Berikut invoice untuk pembayaran DP 50%:
+• Total: Rp ${generatedInvoice?.amount.toLocaleString('id-ID')}
+• DP: Rp ${generatedInvoice?.downPayment.toLocaleString('id-ID')}
+• Due: ${generatedInvoice?.dueDate}
+
+Link pembayaran: ${generatedInvoice?.paymentLink}
+
+Setelah DP diterima, kita langsung mulai project dalam 1-2 hari kerja. Ada pertanyaan? 🚀
+
+---
+🤖 *Auto-generated by OrchesAI Assistant*
+⚡ *Invoice created in ${timeElapsed.toFixed(1)}s vs 45min manual process*`
+  }
+
+  const extractClientName = (message: string) => {
+    // Simple name extraction - in real implementation this would be more sophisticated
+    if (message.toLowerCase().includes('saya')) return 'Pak/Bu'
+    return 'Client'
+  }
+
+  const resetWorkflow = () => {
+    setCurrentStep('input')
+    setProcessingIndex(0)
+    setGeneratedProposal(null)
+    setGeneratedInvoice(null)
+    setTimeElapsed(0)
+    setStartTime(0)
+    setWhatsappMessages([])
+    setIsTyping(false)
+    setDeliveryStatus('sending')
+  }
+
+  const handleTemplateSelect = (template: typeof scenarioTemplates[0]) => {
+    setSelectedTemplate(template)
+    setClientMessage(template.example)
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+          Interactive Workflow Simulation
+        </h3>
+        <p className="text-gray-600">
+          Experience the complete automation from client request to invoice generation
+        </p>
+      </div>
+
+      {/* Progress Steps */}
+      <div className="flex justify-center">
+        <div className="flex items-center space-x-4">
+          {[
+            { id: 'input', label: 'Client Request', icon: <MessageSquare className="w-4 h-4" /> },
+            { id: 'processing', label: 'AI Processing', icon: <Bot className="w-4 h-4" /> },
+            { id: 'proposal', label: 'Proposal', icon: <FileText className="w-4 h-4" /> },
+            { id: 'whatsapp', label: 'WhatsApp Delivery', icon: <Send className="w-4 h-4" /> }
+          ].map((step, index) => (
+            <div key={step.id} className="flex items-center">
+              <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
+                currentStep === step.id ? 'bg-blue-600 border-blue-600 text-white' :
+                ['proposal', 'invoice', 'whatsapp', 'complete'].includes(currentStep) && index < 4 ? 'bg-green-600 border-green-600 text-white' :
+                'bg-gray-100 border-gray-300 text-gray-500'
+              }`}>
+                {(['proposal', 'invoice', 'whatsapp', 'complete'].includes(currentStep) && index < 4) ?
+                  <CheckCircle className="w-4 h-4" /> : step.icon
+                }
+              </div>
+              <span className={`ml-2 text-sm font-medium ${
+                currentStep === step.id ? 'text-blue-600' : 'text-gray-600'
+              }`}>
+                {step.label}
+              </span>
+              {index < 3 && (
+                <ArrowRight className="w-4 h-4 text-gray-300 mx-4" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Side - Input & Processing */}
+        <div className="space-y-6">
+          {/* Step 1: Client Request Input */}
+          {currentStep === 'input' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4"
+            >
+              <Card className="p-6 shadow-lg border-0 bg-white">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Step 1: Simulate Client WhatsApp Message
+                </h4>
+
+                {/* Template Selector */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Choose Scenario Template:
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {scenarioTemplates.map((template) => (
+                      <button
+                        key={template.id}
+                        onClick={() => handleTemplateSelect(template)}
+                        className={`p-3 text-left text-sm rounded-lg border transition-all duration-200 ${
+                          selectedTemplate.id === template.id
+                            ? 'bg-blue-50 border-blue-300 text-blue-700'
+                            : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {template.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Message Input */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Client Message:
+                  </label>
+                  <textarea
+                    value={clientMessage}
+                    onChange={(e) => setClientMessage(e.target.value)}
+                    rows={4}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Type client request here..."
+                  />
+                </div>
+
+                <Button
+                  onClick={handleSendRequest}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  disabled={!clientMessage.trim()}
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Send Client Request
+                </Button>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Step 2: AI Processing Animation */}
+          {currentStep === 'processing' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4"
+            >
+              <Card className="p-6 shadow-lg border-0 bg-white">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Step 2: AI Processing Request
+                </h4>
+
+                <div className="space-y-3">
+                  {processingSteps.map((step, index) => (
+                    <motion.div
+                      key={step.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{
+                        opacity: index <= processingIndex ? 1 : 0.3,
+                        x: 0
+                      }}
+                      className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
+                        index <= processingIndex
+                          ? 'bg-green-50 border border-green-200'
+                          : 'bg-gray-50 border border-gray-200'
+                      }`}
+                    >
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                        index < processingIndex
+                          ? 'bg-green-600 text-white'
+                          : index === processingIndex
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-300 text-gray-600'
+                      }`}>
+                        {index < processingIndex ? (
+                          <CheckCircle className="w-4 h-4" />
+                        ) : index === processingIndex ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          step.icon
+                        )}
+                      </div>
+                      <span className={`text-sm font-medium ${
+                        index <= processingIndex ? 'text-gray-900' : 'text-gray-500'
+                      }`}>
+                        {step.text}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="mt-4 text-center">
+                  <div className="text-sm text-gray-600">
+                    Processing time: {timeElapsed.toFixed(1)}s
+                  </div>
+                  <div className="text-xs text-green-600 mt-1">
+                    Manual process would take 45+ minutes
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Original Client Message Display */}
+          {(currentStep === 'proposal' || currentStep === 'approval' || currentStep === 'invoice' || currentStep === 'whatsapp') && (
+            <Card className="p-4 shadow-lg border-0 bg-gray-50">
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Original Client Request:</h5>
+              <div className="text-sm text-gray-600 italic">
+                "{clientMessage}"
+              </div>
+            </Card>
+          )}
+        </div>
+
+        {/* Right Side - Generated Documents */}
+        <div className="space-y-6">
+          {/* Step 3: Generated Proposal */}
+          {(currentStep === 'proposal' || currentStep === 'approval' || currentStep === 'invoice' || currentStep === 'whatsapp') && generatedProposal && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="p-6 shadow-lg border-0 bg-white">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    📄 Generated Proposal
+                  </h4>
+                  <Badge className="bg-green-100 text-green-800">
+                    Generated in {timeElapsed.toFixed(1)}s
+                  </Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Proposal ID</label>
+                      <div className="text-sm font-mono text-gray-900">{generatedProposal.id}</div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Created</label>
+                      <div className="text-sm text-gray-900">{generatedProposal.createdAt}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">Project Type</label>
+                    <div className="text-lg font-semibold text-gray-900">{generatedProposal.projectType}</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Estimated Price</label>
+                      <div className="text-xl font-bold text-green-600">
+                        Rp {generatedProposal.estimatedPrice.toLocaleString('id-ID')}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Timeline</label>
+                      <div className="text-sm text-gray-900">{generatedProposal.timeline}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">Included Features</label>
+                    <ul className="mt-1 space-y-1">
+                      {generatedProposal.features.map((feature: string, index: number) => (
+                        <li key={index} className="text-sm text-gray-700 flex items-center">
+                          <CheckCircle className="w-3 h-3 text-green-500 mr-2" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="text-xs text-gray-500">
+                    Valid until: {generatedProposal.validUntil}
+                  </div>
+
+                  {currentStep === 'proposal' && (
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        onClick={handleApproval}
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Simulate Client Approval
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="px-4"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Step 4: Client Approval Simulation */}
+          {currentStep === 'approval' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="p-6 shadow-lg border-0 bg-blue-50 border border-blue-200">
+                <h4 className="text-lg font-semibold text-blue-900 mb-4">
+                  📱 Client Response Simulation
+                </h4>
+                <div className="bg-white p-4 rounded-lg border border-blue-200">
+                  <div className="text-sm text-gray-600 mb-2">Client WhatsApp:</div>
+                  <div className="text-gray-900 italic">
+                    "Proposal bagus! Saya setuju dengan semua detail dan pricing. Kapan bisa mulai dan gimana pembayarannya?"
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center justify-center">
+                  <Loader2 className="w-5 h-5 animate-spin text-blue-600 mr-2" />
+                  <span className="text-blue-700 font-medium">Processing approval & generating invoice...</span>
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Step 5: Generated Invoice */}
+          {currentStep === 'invoice' && generatedInvoice && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="p-6 shadow-lg border-0 bg-white">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    🧾 Auto-Generated Invoice
+                  </h4>
+                  <Badge className="bg-purple-100 text-purple-800">
+                    Instant Generation
+                  </Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Invoice ID</label>
+                      <div className="text-sm font-mono text-gray-900">{generatedInvoice.id}</div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Created</label>
+                      <div className="text-sm text-gray-900">{generatedInvoice.createdAt}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">Project</label>
+                    <div className="text-lg font-semibold text-gray-900">{generatedInvoice.projectType}</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Total Amount</label>
+                      <div className="text-lg font-bold text-gray-900">
+                        Rp {generatedInvoice.amount.toLocaleString('id-ID')}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-gray-500">Down Payment</label>
+                      <div className="text-xl font-bold text-green-600">
+                        Rp {generatedInvoice.downPayment.toLocaleString('id-ID')}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">Payment Link</label>
+                    <div className="text-sm text-blue-600 underline font-mono">
+                      {generatedInvoice.paymentLink}
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-gray-500">
+                    Due date: {generatedInvoice.dueDate}
+                  </div>
+
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      onClick={sendInvoiceToWhatsApp}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      <Send className="w-4 h-4 mr-2" />
+                      Send via WhatsApp
+                    </Button>
+                    <Button variant="outline" className="px-4">
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Time Savings Summary */}
+              <Card className="p-6 shadow-lg border-0 bg-gradient-to-r from-green-50 to-blue-50 mt-4">
+                <h5 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                  🎉 Automation Complete!
+                </h5>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-green-600">{timeElapsed.toFixed(1)}s</div>
+                    <div className="text-xs text-gray-600">Automation Time</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-red-600">45 min</div>
+                    <div className="text-xs text-gray-600">Manual Process</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-blue-600">99.8%</div>
+                    <div className="text-xs text-gray-600">Time Saved</div>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={resetWorkflow}
+                  className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Try Another Scenario
+                </Button>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Step 5: WhatsApp Chat Interface - Responsive Comparison View */}
+          {currentStep === 'whatsapp' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="p-6 shadow-lg border-0 bg-white">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    📱 WhatsApp Delivery
+                  </h4>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      deliveryStatus === 'sending' ? 'bg-yellow-500' :
+                      deliveryStatus === 'delivered' ? 'bg-blue-500' :
+                      'bg-green-500'
+                    }`}></div>
+                    <span className="text-xs text-gray-600 capitalize">{deliveryStatus}</span>
+                  </div>
+                </div>
+
+                {/* Desktop: Side-by-side Layout */}
+                <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+                  {/* Left Column - WhatsApp Chat */}
+                  <div className="lg:col-span-1">
+                    {/* Authentic WhatsApp Header with AI Agent Branding */}
+                    <div className="bg-[#075E54] text-white p-3 rounded-t-lg flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                      <Bot className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-sm flex items-center">
+                      OrchesAI Assistant
+                      <div className="ml-2 px-2 py-0.5 bg-blue-500 bg-opacity-20 rounded-full text-xs">
+                        🤖 AI Agent
+                      </div>
+                    </div>
+                    <div className="text-xs text-green-200 flex items-center">
+                      <div className="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></div>
+                      {deliveryStatus === 'sending' ? 'Processing automation...' :
+                       deliveryStatus === 'delivered' ? 'AI workflow active' :
+                       'AI automation complete'}
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button className="p-2 hover:bg-[#128C7E] rounded-full transition-colors">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                    </button>
+                    <button className="p-2 hover:bg-[#128C7E] rounded-full transition-colors">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0v-.5A1.5 1.5 0 0114.5 6c.526 0 .988-.27 1.256-.679a6.012 6.012 0 011.912 2.706A8.054 8.054 0 0118 10a8.054 8.054 0 01-.332 1.973 6.012 6.012 0 01-1.912 2.706C15.488 14.27 15.026 14 14.5 14A1.5 1.5 0 0013 12.5V12a2 2 0 00-4 0v.5A1.5 1.5 0 007.5 14c-.526 0-.988.27-1.256.679a6.012 6.012 0 01-1.912-2.706A8.054 8.054 0 014 10a8.054 8.054 0 01.332-1.973z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                {/* WhatsApp Chat Interface with authentic styling */}
+                <div className="bg-[#E5DDD5] bg-opacity-30 p-4 h-96 overflow-y-auto"
+                     style={{
+                       backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.1'%3E%3Cpath d='m0 40l40-40h-40v40z'/%3E%3C/g%3E%3C/svg%3E")`
+                     }}>
+
+                  <div className="space-y-3">
+                    {whatsappMessages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`flex ${
+                          message.type === 'system' ? 'justify-center' :
+                          message.type === 'outgoing' ? 'justify-end' : 'justify-start'
+                        }`}
+                      >
+                        <div
+                          className={`max-w-xs p-3 relative shadow-sm ${
+                            message.type === 'system'
+                              ? 'bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-gray-700 rounded-lg mx-auto text-center'
+                              : message.type === 'outgoing'
+                              ? 'bg-[#DCF8C6] text-gray-900 rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-br-sm'
+                              : message.isOriginal
+                              ? 'bg-[#E3F2FD] border-l-4 border-blue-500 text-gray-900 rounded-tl-sm rounded-tr-lg rounded-bl-lg rounded-br-lg'
+                              : 'bg-white text-gray-900 rounded-tl-lg rounded-tr-sm rounded-bl-lg rounded-br-lg'
+                          }`}
+                          style={{
+                            fontFamily: 'system-ui, -apple-system'
+                          }}
+                        >
+                          {/* Original Request Label */}
+                          {message.isOriginal && (
+                            <div className="text-xs text-blue-600 font-medium mb-2 flex items-center">
+                              <MessageSquare className="w-3 h-3 mr-1" />
+                              Original Client Request
+                            </div>
+                          )}
+
+                          {/* Text Message */}
+                          {message.text && (
+                            <div className="text-sm whitespace-pre-wrap">
+                              {message.text}
+                            </div>
+                          )}
+
+                          {/* Document Message */}
+                          {message.document && (
+                            <div className="flex items-center space-x-3 p-2 bg-white bg-opacity-20 rounded">
+                              <div className="flex items-center justify-center w-10 h-10 bg-red-500 rounded">
+                                <FileText className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-sm">{message.document.name}</div>
+                                <div className="text-xs opacity-75">{message.document.size}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* WhatsApp-style Message Status */}
+                          <div className="flex items-center justify-end mt-2 space-x-1">
+                            <span className="text-xs text-gray-500" style={{ fontSize: '11px' }}>
+                              {message.timestamp.toLocaleTimeString('id-ID', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                            {message.type === 'outgoing' && (
+                              <div className="flex ml-1">
+                                {message.status === 'sending' && (
+                                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
+                                  </svg>
+                                )}
+                                {message.status === 'delivered' && (
+                                  <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                                {message.status === 'read' && (
+                                  <div className="flex -space-x-1">
+                                    <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                    <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* WhatsApp-style Typing Indicator */}
+                    {isTyping && (
+                      <div className="flex justify-start">
+                        <div className="bg-white shadow-sm p-3 rounded-tl-lg rounded-tr-sm rounded-bl-lg rounded-br-lg max-w-16">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                      {/* WhatsApp Message Input Area */}
+                      <div className="bg-[#F0F0F0] p-3 rounded-b-lg flex items-center space-x-3 border-t">
+                        <div className="flex-1 bg-white rounded-full px-4 py-2 text-sm text-gray-500">
+                          Type a message...
+                        </div>
+                        <button className="w-10 h-10 bg-[#25D366] rounded-full flex items-center justify-center text-white">
+                          <Send className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column - Complete Summary */}
+                  <div className="lg:col-span-1 mt-6 lg:mt-0">
+                    <div className="h-full p-6 rounded-lg bg-gradient-to-r from-green-50 to-blue-50 border shadow-lg">
+                        <h5 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                          🎉 Workflow Complete!
+                        </h5>
+
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-4 text-center">
+                            <div className="bg-white p-4 rounded-lg">
+                              <div className="text-2xl font-bold text-green-600">{timeElapsed.toFixed(1)}s</div>
+                              <div className="text-xs text-gray-600">Total Automation Time</div>
+                            </div>
+                            <div className="bg-white p-4 rounded-lg">
+                              <div className="text-2xl font-bold text-blue-600">100%</div>
+                              <div className="text-xs text-gray-600">Process Automated</div>
+                            </div>
+                          </div>
+
+                          <div className="bg-white p-4 rounded-lg">
+                            <h6 className="font-semibold text-gray-900 mb-2">Yang berhasil diotomatisasi:</h6>
+                            <ul className="text-sm text-gray-600 space-y-1">
+                              <li>✅ Analisis permintaan client & ekstraksi requirement</li>
+                              <li>✅ Generate proposal otomatis dengan pricing</li>
+                              <li>✅ Pembuatan invoice dengan payment links</li>
+                              <li>✅ Pengiriman WhatsApp personal dengan attachment</li>
+                              <li>✅ Real-time tracking status pengiriman</li>
+                            </ul>
+                          </div>
+
+                          <div className="text-center text-sm text-gray-600">
+                            Proses manual: <span className="line-through">45+ menit</span> →
+                            <span className="text-green-600 font-bold"> {timeElapsed.toFixed(1)} detik</span>
+                          </div>
+
+                          <Button
+                            onClick={resetWorkflow}
+                            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            <Zap className="w-4 h-4 mr-2" />
+                            Coba Skenario Lain
+                          </Button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
+          {/* Step 6: Complete Summary */}
+          {currentStep === 'complete' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Card className="p-6 shadow-lg border-0 bg-gradient-to-r from-green-50 to-blue-50">
+                <h5 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                  🎉 Workflow Complete!
+                </h5>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="bg-white p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">{timeElapsed.toFixed(1)}s</div>
+                      <div className="text-xs text-gray-600">Total Automation Time</div>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">100%</div>
+                      <div className="text-xs text-gray-600">Process Automated</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg">
+                    <h6 className="font-semibold text-gray-900 mb-2">What was automated:</h6>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      <li>✅ Client request analysis & requirement extraction</li>
+                      <li>✅ Automatic proposal generation with pricing</li>
+                      <li>✅ Invoice creation with payment links</li>
+                      <li>✅ Personalized WhatsApp delivery with attachments</li>
+                      <li>✅ Real-time delivery status tracking</li>
+                    </ul>
+                  </div>
+
+                  <div className="text-center text-sm text-gray-600">
+                    Manual process: <span className="line-through">45+ minutes</span> →
+                    <span className="text-green-600 font-bold"> {timeElapsed.toFixed(1)} seconds</span>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={resetWorkflow}
+                  className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Try Another Scenario
+                </Button>
+              </Card>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

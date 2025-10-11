@@ -1,0 +1,117 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing
+/test-results/
+/playwright-report/
+/coverage/
+
+# Debug and Screenshots
+/screenshots/
+debug-*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore parent directories and system files
+../../../../*/
+../../../*/
+../../*/
+../*.svg
+../*.png
+../*.jpg
+../*.jpeg
+../*.gif
+../*.md
+
+# macOS system files
+.CFUserTextEncoding
+.android/
+.anydesk/
+.bash_history
+.bun/
+.bundle/
+.cache/
+.claude.json*
+.claude/
+.cocoapods/
+.codeium/
+.config/
+.cursor/
+.expo/
+.gem/
+.gitconfig
+.idlerc/
+.lesshst
+.local/
+.mono/
+.n8n-mcp/
+.node_repl_history
+.npm-global/
+.npm/
+.npmrc
+.ollama/
+.qoder/
+.sqlite_history
+.swiftpm/
+.trae-aicc/
+.trae/
+.viminfo
+.windsurf/
+.zprofile
+.zsh_history
+.zsh_sessions/
+.zshrc
+Applications/
+CascadeProjects/
+Desktop/
+Documents/
+Downloads/
+GIT/
+Movies/
+Music/
+Pictures/
+Public/
+*.localized

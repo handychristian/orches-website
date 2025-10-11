@@ -1,0 +1,28 @@
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- OrchesAI Logo - Apple Style -->
+  <g id="orchesai-logo">
+    <!-- Icon -->
+    <g id="icon">
+      <!-- Outer ring -->
+      <circle cx="20" cy="20" r="18" stroke="#007AFF" stroke-width="2" fill="none"/>
+      <!-- Inner elements forming AI network -->
+      <circle cx="14" cy="14" r="3" fill="#007AFF"/>
+      <circle cx="26" cy="14" r="3" fill="#007AFF"/>
+      <circle cx="14" cy="26" r="3" fill="#007AFF"/>
+      <circle cx="26" cy="26" r="3" fill="#007AFF"/>
+      <circle cx="20" cy="20" r="2" fill="#00D4AA"/>
+      <!-- Connections -->
+      <path d="M14 14L26 26M26 14L14 26M20 20L14 14M20 20L26 14M20 20L14 26M20 20L26 26"
+            stroke="#007AFF" stroke-width="0.5" opacity="0.5"/>
+    </g>
+
+    <!-- Text -->
+    <text x="48" y="26"
+          font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif"
+          font-size="22"
+          font-weight="500"
+          fill="#1d1d1f">
+      OrchesAI
+    </text>
+  </g>
+</svg>
