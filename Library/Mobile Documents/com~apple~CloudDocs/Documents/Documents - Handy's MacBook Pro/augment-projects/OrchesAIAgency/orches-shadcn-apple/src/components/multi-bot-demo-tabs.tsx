@@ -168,8 +168,8 @@ export default function MultiBotDemoTabs() {
         <div className="md:hidden text-center mb-3">
           <p className="text-xs text-gray-500">👆 Tap untuk lihat demo scenario berbeda</p>
         </div>
-        <div className="overflow-x-auto">
-          <div className="flex gap-2 pb-2 md:justify-center w-max min-w-full">
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 pb-2 md:justify-center">
           {bots.map((bot) => {
             const Icon = bot.icon
             const isActive = selectedBot === bot.id
