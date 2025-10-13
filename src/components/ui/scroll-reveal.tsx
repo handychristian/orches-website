@@ -39,6 +39,7 @@ export function ScrollReveal({
         ease: [0.16, 1, 0.3, 1]
       }}
       className={className}
+      style={{ overflow: 'visible', height: 'auto' }}
     >
       {children}
     </motion.div>
@@ -77,6 +78,7 @@ export function TextReveal({
           ease: [0.16, 1, 0.3, 1]
         }}
         className={className}
+        style={{ overflow: 'visible', height: 'auto' }}
       >
         {children}
       </motion.div>
@@ -121,7 +123,7 @@ export function StaggerContainer({
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={{ overflow: 'visible', height: 'auto' }}>
       {children.map((child, index) => (
         <motion.div
           key={index}
@@ -132,6 +134,7 @@ export function StaggerContainer({
             delay: index * staggerDelay,
             ease: [0.16, 1, 0.3, 1]
           }}
+          style={{ overflow: 'visible', height: 'auto' }}
         >
           {child}
         </motion.div>
@@ -159,6 +162,7 @@ export function ScaleReveal({
         ease: [0.16, 1, 0.3, 1]
       }}
       className={className}
+      style={{ overflow: 'visible', height: 'auto' }}
     >
       {children}
     </motion.div>

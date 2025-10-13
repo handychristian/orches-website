@@ -30,7 +30,7 @@ export default function IntegrationLogos() {
   const row2 = [...integrations.slice(9), ...integrations.slice(9)]
 
   return (
-    <section className="py-20 px-6 bg-white overflow-hidden">
+    <section className="py-20 px-6 bg-white overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

@@ -159,7 +159,7 @@ export default function HeroV4() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
         >
           <motion.div
             whileHover={{ scale: 1.02 }}
@@ -196,20 +196,15 @@ export default function HeroV4() {
           </motion.div>
         </motion.div>
 
-        {/* Trust indicators with Urgency */}
+        {/* Trust indicators */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="space-y-3"
         >
           <p className="text-[13px] text-[#86868B]">
             Free consultation 30 menit • 30-day warranty • Anda tidak perlu mengerti teknis
           </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-[13px] font-medium text-green-700">Hanya 5 slot tersedia bulan ini</span>
-          </div>
         </motion.div>
       </motion.div>
     </section>

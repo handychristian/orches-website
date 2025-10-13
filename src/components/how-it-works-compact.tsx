@@ -33,8 +33,8 @@ const steps = [
 
 export default function HowItWorksCompact() {
   return (
-    <section id="how-it-works" className="py-24 px-6 bg-white">
-      <div className="max-w-6xl mx-auto">
+    <section id="how-it-works" className="py-24 px-6 bg-white" style={{ overflow: 'visible', height: 'auto' }}>
+      <div className="max-w-6xl mx-auto" style={{ overflow: 'visible', height: 'auto' }}>
         {/* Section Header with Friction Removal */}
         <div className="text-center mb-16">
           <TextReveal className="text-[40px] sm:text-[48px] font-semibold text-black mb-4 tracking-tight leading-[1.1]">
@@ -59,7 +59,7 @@ export default function HowItWorksCompact() {
         </div>
 
         {/* Steps - Compact Grid Layout */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-8 mb-16" style={{ overflow: 'visible', height: 'auto' }}>
           {steps.map((step, index) => {
             const Icon = step.icon
 

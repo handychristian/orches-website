@@ -8,28 +8,17 @@ import IntegrationProblemCompact from '@/components/integration-problem-compact'
 import IntegrationLogos from '@/components/integration-logos'
 import HowItWorksCompact from '@/components/how-it-works-compact'
 import LazySection from '@/components/loading/lazy-section'
-import { InteractiveSkeleton, SectionSkeleton } from '@/components/loading/component-skeleton'
+import { InteractiveSkeleton } from '@/components/loading/component-skeleton'
+// Changed from dynamic imports to regular imports to fix nested scroll issue
+import EducationBridge from '@/components/education-bridge'
+import ZeroRiskPromise from '@/components/zero-risk-promise'
+import PricingSimple from '@/components/pricing-simple'
+import FAQV4 from '@/components/faq-v4'
 
-// Lazy load heavy components
+// Lazy load only the heavy interactive demo
 const MultiBotDemoTabs = dynamic(() => import('@/components/multi-bot-demo-tabs'), {
   loading: () => <InteractiveSkeleton />,
   ssr: false
-})
-
-const EducationBridge = dynamic(() => import('@/components/education-bridge'), {
-  loading: () => <SectionSkeleton />
-})
-
-const ZeroRiskPromise = dynamic(() => import('@/components/zero-risk-promise'), {
-  loading: () => <SectionSkeleton />
-})
-
-const PricingSimple = dynamic(() => import('@/components/pricing-simple'), {
-  loading: () => <SectionSkeleton />
-})
-
-const FAQV4 = dynamic(() => import('@/components/faq-v4'), {
-  loading: () => <SectionSkeleton />
 })
 
 export default function Home() {
@@ -48,22 +37,11 @@ export default function Home() {
 
       <IntegrationLogos />
 
-      {/* Lazy loaded sections below the fold */}
-      <LazySection>
-        <ZeroRiskPromise />
-      </LazySection>
-
-      <LazySection>
-        <PricingSimple />
-      </LazySection>
-
-      <LazySection>
-        <EducationBridge />
-      </LazySection>
-
-      <LazySection>
-        <FAQV4 />
-      </LazySection>
+      {/* Removed LazySection wrappers - they caused layout shifts and nested scroll */}
+      <ZeroRiskPromise />
+      <PricingSimple />
+      <EducationBridge />
+      <FAQV4 />
     </main>
   )
 }

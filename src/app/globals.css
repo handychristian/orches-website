@@ -138,20 +138,6 @@
     overflow-x: hidden;
   }
 
-  /* Force all motion elements to respect bounds */
-  [data-motion] {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  /* Demo section layout fixes */
-  #demo {
-    overflow: visible !important;
-    contain: none !important;
-    height: auto !important;
-    position: relative !important;
-  }
-
   /* Mobile-specific fixes */
   @media (max-width: 768px) {
     .overflow-x-auto {

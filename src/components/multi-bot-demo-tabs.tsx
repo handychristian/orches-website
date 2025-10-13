@@ -317,9 +317,12 @@ export default function MultiBotDemoTabs() {
       }}
     >
       <div className="max-w-7xl mx-auto px-4">
-        {/* Mobile hint */}
-        <div className="md:hidden text-center mb-3">
-          <p className="text-xs text-gray-500">👆 Tap untuk lihat demo scenario berbeda</p>
+        {/* Hint for all devices */}
+        <div className="text-center mb-3">
+          <p className="text-xs text-gray-500">
+            <span className="md:hidden">👇 Tap untuk lihat demo scenario berbeda</span>
+            <span className="hidden md:inline">👇 Click untuk lihat demo scenario berbeda</span>
+          </p>
         </div>
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-2 pb-2 md:justify-center" style={{ minWidth: 'max-content' }}>

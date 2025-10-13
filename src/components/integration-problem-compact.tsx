@@ -59,17 +59,17 @@ export default function IntegrationProblemCompact() {
         </div>
 
         {/* Compact Cards Grid */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid lg:grid-cols-3 gap-6 mb-12" style={{ height: 'auto' }}>
           {problems.map((problem, index) => {
             const IconComponent = iconMap[problem.icon as keyof typeof iconMap]
 
             return (
             <ScrollReveal key={index} delay={index * 0.15} direction="up">
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full">
+              <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col" style={{ overflow: 'visible', height: 'auto', minHeight: 'fit-content' }}>
                 {/* Top gradient bar */}
-                <div className={`h-0.5 bg-gradient-to-r ${problem.iconColor}`}></div>
+                <div className={`h-0.5 bg-gradient-to-r ${problem.iconColor} rounded-t-2xl`}></div>
 
-                <div className="p-6">
+                <div className="p-6 flex-1">
                   {/* Icon + Title horizontal */}
                   <div className="flex items-center gap-4 mb-6">
                     <div className={`w-16 h-16 flex-shrink-0 rounded-xl bg-gradient-to-br ${problem.iconColor} flex items-center justify-center`}>
