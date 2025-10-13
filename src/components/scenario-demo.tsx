@@ -1071,6 +1071,7 @@ export default function ScenarioDemo({
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isInViewport, setIsInViewport] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const demoRef = useRef<HTMLDivElement>(null)
 
@@ -1109,7 +1110,7 @@ export default function ScenarioDemo({
   }, [selectedScenario, autoPlay, isInViewport])
 
   useEffect(() => {
-    if (isPlaying && currentStep < scenario.conversation.length) {
+    if (isPlaying && !isPaused && currentStep < scenario.conversation.length) {
       const timer = setTimeout(() => {
         setCurrentStep(prev => prev + 1)
       }, 1200) // Faster messaging - 1.2s instead of 2s
@@ -1117,7 +1118,7 @@ export default function ScenarioDemo({
     } else if (currentStep >= scenario.conversation.length) {
       setIsPlaying(false)
     }
-  }, [isPlaying, currentStep, scenario.conversation.length])
+  }, [isPlaying, isPaused, currentStep, scenario.conversation.length])
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -1145,7 +1146,12 @@ export default function ScenarioDemo({
   }
 
   return (
-    <div ref={demoRef} className={`max-w-md w-full ${className}`}>
+    <div
+      ref={demoRef}
+      className={`max-w-md w-full ${className}`}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Scenario Selector */}
       {showSelector && (
         <div className="bg-white rounded-t-3xl shadow-lg p-4 mb-0">
@@ -1185,7 +1191,7 @@ export default function ScenarioDemo({
           <div className="flex-1">
             <h3 className="text-white font-medium text-sm">{scenario.agent.name}</h3>
             <p className="text-green-200 text-xs">
-              {autoPlay && !isInViewport ? 'waiting...' : isPlaying ? 'typing...' : 'online'}
+              {autoPlay && !isInViewport ? 'waiting...' : isPlaying && !isPaused ? 'typing...' : isPaused ? 'paused...' : 'online'}
             </p>
           </div>
         </motion.div>

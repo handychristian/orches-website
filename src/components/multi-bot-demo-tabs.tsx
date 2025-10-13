@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import ScenarioDemo from '@/components/scenario-demo'
 import { MessageCircle, Package, Users, Truck, BarChart3, X, ChevronRight } from 'lucide-react'
@@ -105,12 +105,33 @@ const bots = [
 export default function MultiBotDemoTabs() {
   const [selectedBot, setSelectedBot] = useState(bots[0].id)
   const [showAllFeatures, setShowAllFeatures] = useState(false)
+  const [isTabsSticky, setIsTabsSticky] = useState(false)
+  const tabsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+
   const currentBot = bots.find(b => b.id === selectedBot) || bots[0]
   const BotIcon = currentBot.icon
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!tabsRef.current || !sectionRef.current) return
+
+      const sectionRect = sectionRef.current.getBoundingClientRect()
+      const tabsRect = tabsRef.current.getBoundingClientRect()
+
+      // Make sticky when section header scrolls past top
+      const shouldBeSticky = sectionRect.top < 0 && sectionRect.bottom > 100
+      setIsTabsSticky(shouldBeSticky)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <section id="demo" className="w-full bg-white py-24">
-      <div id="demo-section" className="max-w-7xl mx-auto px-4">
+    <>
+    <section ref={sectionRef} id="demo" className="w-full bg-white py-24" style={{ overflow: 'visible' }}>
+      <div id="demo-section" className="max-w-7xl mx-auto px-4" style={{ position: 'relative' }}>
         {/* Header */}
         <div className="text-center mb-12">
           <motion.div
@@ -162,72 +183,8 @@ export default function MultiBotDemoTabs() {
           </motion.div>
         </div>
 
-      {/* Tabs Navigation - Sticky */}
-      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm py-4 -mx-4 px-4 mb-6 shadow-sm overflow-hidden">
-        {/* Mobile hint */}
-        <div className="md:hidden text-center mb-3">
-          <p className="text-xs text-gray-500">👆 Tap untuk lihat demo scenario berbeda</p>
-        </div>
-        <div className="overflow-x-auto scrollbar-hide">
-          <div className="flex gap-2 pb-2 md:justify-center">
-          {bots.map((bot) => {
-            const Icon = bot.icon
-            const isActive = selectedBot === bot.id
-
-            return (
-              <button
-                key={bot.id}
-                onClick={() => setSelectedBot(bot.id)}
-                className={`
-                  group relative flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer touch-manipulation shrink-0
-                  ${isActive
-                    ? 'bg-black text-white shadow-lg scale-105'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-md active:scale-[0.98] border border-gray-200'
-                  }
-                `}
-              >
-                {/* Icon */}
-                <div className={`
-                  p-2 rounded-lg
-                  ${isActive ? 'bg-white/20' : 'bg-gray-100'}
-                `}>
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-600'}`} />
-                </div>
-
-                {/* Text */}
-                <div className="text-left">
-                  <div className="font-semibold text-sm whitespace-nowrap">
-                    {bot.shortName}
-                  </div>
-                  <div className={`text-xs ${isActive ? 'text-gray-300' : 'text-gray-600'}`}>
-                    {bot.name}
-                  </div>
-                </div>
-
-                {/* Badge */}
-                <span className={`
-                  ${bot.badgeColor} text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase
-                `}>
-                  {bot.badge}
-                </span>
-
-                {/* Clickable Hint */}
-                {!isActive && (
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors ml-1" />
-                )}
-
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-                    <div className="w-2 h-2 bg-black rotate-45"></div>
-                  </div>
-                )}
-              </button>
-            )
-          })}
-        </div>
-        </div>
-      </div>
+      {/* Placeholder space for sticky tabs */}
+      <div ref={tabsRef} className="mb-6" style={{ height: '80px' }} />
 
       {/* Current Bot Info */}
       <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 mb-6 border border-gray-200">
@@ -345,6 +302,86 @@ export default function MultiBotDemoTabs() {
       <div id="demo-section-end"></div>
       </div>
     </section>
+
+    {/* Fixed Sticky Tabs - positioned below navigation */}
+    <div
+      className={`fixed left-0 right-0 bg-white/95 backdrop-blur-sm py-4 shadow-sm border-b border-gray-100 transition-all duration-300 ${
+        isTabsSticky ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+      }`}
+      style={{
+        top: '0px', // Full top positioning (nav is hidden in demo section)
+        zIndex: 9999,
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)'
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Mobile hint */}
+        <div className="md:hidden text-center mb-3">
+          <p className="text-xs text-gray-500">👆 Tap untuk lihat demo scenario berbeda</p>
+        </div>
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 pb-2 md:justify-center" style={{ minWidth: 'max-content' }}>
+          {bots.map((bot) => {
+            const Icon = bot.icon
+            const isActive = selectedBot === bot.id
+
+            return (
+              <button
+                key={bot.id}
+                onClick={() => setSelectedBot(bot.id)}
+                className={`
+                  group relative flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer touch-manipulation shrink-0
+                  ${isActive
+                    ? 'bg-black text-white shadow-lg scale-105'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-md active:scale-[0.98] border border-gray-200'
+                  }
+                `}
+              >
+                {/* Icon */}
+                <div className={`
+                  p-2 rounded-lg
+                  ${isActive ? 'bg-white/20' : 'bg-gray-100'}
+                `}>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-600'}`} />
+                </div>
+
+                {/* Text */}
+                <div className="text-left">
+                  <div className="font-semibold text-sm whitespace-nowrap">
+                    {bot.shortName}
+                  </div>
+                  <div className={`text-xs ${isActive ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {bot.name}
+                  </div>
+                </div>
+
+                {/* Badge */}
+                <span className={`
+                  ${bot.badgeColor} text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase
+                `}>
+                  {bot.badge}
+                </span>
+
+                {/* Clickable Hint */}
+                {!isActive && (
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors ml-1" />
+                )}
+
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+                    <div className="w-2 h-2 bg-black rotate-45"></div>
+                  </div>
+                )}
+              </button>
+            )
+          })}
+        </div>
+        </div>
+      </div>
+    </div>
+    </>
   )
 }
-/* Force git sync */

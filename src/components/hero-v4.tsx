@@ -36,7 +36,7 @@ function Counter({ value, suffix = '' }: { value: number; suffix?: string }) {
   }, [isInView, value])
 
   return (
-    <div ref={ref} className="text-[40px] font-semibold text-black mb-2">
+    <div ref={ref} className="text-[28px] sm:text-[40px] font-semibold text-black mb-2">
       {count}{suffix}
     </div>
   )
@@ -62,7 +62,7 @@ export default function HeroV4() {
       <SpotlightCursor />
 
       <motion.div
-        className="max-w-6xl mx-auto px-6 text-center relative z-10"
+        className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10"
         style={{ y, opacity }}
       >
         {/* Alert Badge - Pain Point */}
@@ -70,12 +70,12 @@ export default function HeroV4() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-red-50 border border-red-200 rounded-full mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-red-50 border border-red-200 rounded-full mb-6 sm:mb-8"
         >
           <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-[15px] font-medium text-red-700">
+          <span className="text-[13px] sm:text-[15px] font-medium text-red-700">
             Bisnis Anda Buang Waktu & Uang Setiap Hari
           </span>
         </motion.div>
@@ -87,14 +87,14 @@ export default function HeroV4() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-8"
         >
-          <h1 className="text-[40px] sm:text-[48px] font-semibold text-black tracking-tight leading-[1.2] mb-2">
+          <h1 className="text-[24px] sm:text-[48px] font-semibold text-black tracking-tight leading-[1.2] mb-2">
             Pekerjaan Repetitif
           </h1>
           <motion.h2
             initial={{ backgroundPosition: '200% center' }}
             animate={{ backgroundPosition: '0% center' }}
             transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[64px] sm:text-[80px] lg:text-[96px] font-bold tracking-tight leading-[1] mb-2"
+            className="text-[36px] sm:text-[80px] lg:text-[96px] font-bold tracking-tight leading-[1] mb-2"
             style={{
               background: 'linear-gradient(90deg, #DC2626 0%, #DC2626 40%, #EF4444 50%, #DC2626 60%, #DC2626 100%)',
               backgroundSize: '200% auto',
@@ -105,7 +105,7 @@ export default function HeroV4() {
           >
             Membuang 20+ Jam
           </motion.h2>
-          <h3 className="text-[40px] sm:text-[48px] font-semibold text-black tracking-tight leading-[1.2]">
+          <h3 className="text-[24px] sm:text-[48px] font-semibold text-black tracking-tight leading-[1.2]">
             Per Minggu
           </h3>
         </motion.div>
@@ -115,7 +115,7 @@ export default function HeroV4() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[21px] sm:text-[24px] text-[#1D1D1F] mb-8 max-w-4xl mx-auto font-normal leading-[1.4]"
+          className="text-[16px] sm:text-[24px] text-[#1D1D1F] mb-6 sm:mb-8 max-w-4xl mx-auto font-normal leading-[1.4]"
         >
           Waktu yang seharusnya bisa Anda pakai untuk <span className="font-semibold text-black">fokus ke strategi bisnis</span>, <span className="font-semibold text-black">keluarga</span>, atau <span className="font-semibold text-black">istirahat</span>.
         </motion.p>
@@ -125,7 +125,7 @@ export default function HeroV4() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[19px] text-[#86868B] mb-16 max-w-4xl mx-auto font-normal leading-[1.5]"
+          className="text-[14px] sm:text-[19px] text-[#86868B] mb-12 sm:mb-16 max-w-4xl mx-auto font-normal leading-[1.5]"
         >
           Kami bangun <span className="font-semibold text-[#1D1D1F]">sistem otomasi custom</span> — Anda tidak perlu mengerti teknis apapun.
         </motion.p>

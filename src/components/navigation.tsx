@@ -24,27 +24,26 @@ export default function Navigation() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
 
-      // Check if we're in the demo section
-      const demoSection = document.getElementById('demo-section')
-      const demoSectionEnd = document.getElementById('demo-section-end')
+      // Check if we're in the demo section with better detection
+      const demoSection = document.getElementById('demo')
 
       let inDemoSection = false
-      if (demoSection && demoSectionEnd) {
-        const demoStart = demoSection.offsetTop
-        const demoEnd = demoSectionEnd.offsetTop + demoSectionEnd.offsetHeight
-        inDemoSection = currentScrollY >= demoStart - 100 && currentScrollY < demoEnd
+      if (demoSection) {
+        const demoRect = demoSection.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+
+        // In demo section if any part of demo is visible in viewport
+        inDemoSection = demoRect.top < windowHeight && demoRect.bottom > 0
       }
 
-      // If in demo section, force hide navigation
+      // Absolute hide in demo section - no scroll-up override
       if (inDemoSection) {
         setVisible(false)
       } else {
-        // Normal auto-hide behavior
+        // Normal auto-hide behavior only outside demo
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          // Scrolling down & past threshold
           setVisible(false)
         } else {
-          // Scrolling up
           setVisible(true)
         }
       }
@@ -59,7 +58,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed left-0 right-0 z-[10000] transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200/50'
           : 'bg-white'
@@ -133,29 +132,15 @@ export default function Navigation() {
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-full bg-white">
-              <div className="flex flex-col gap-6 mt-8">
-                <div className="flex items-center gap-0.5 mb-4">
-                  <div className="bg-white rounded-full p-2.5">
-                    <Image
-                      src="/assets/logo.png"
-                      alt="OrchesAI Logo"
-                      width={36}
-                      height={36}
-                      className="h-9 w-9"
-                    />
-                  </div>
-                  <span className="text-[22px] font-medium text-black tracking-tight">
-                    OrchesAI
-                  </span>
-                </div>
-
-                <nav className="flex flex-col gap-1">
+            <SheetContent side="right" className="w-full bg-white p-6">
+              <div className="flex flex-col h-full">
+                {/* Navigation Items */}
+                <nav className="flex flex-col gap-2 mt-16">
                   {navigationItems.map((item) => (
                     <a
                       key={item.label}
                       href={item.href}
-                      className="text-[17px] text-gray-800 hover:text-black py-3 transition-colors"
+                      className="text-[17px] text-gray-800 hover:text-black py-3 px-2 transition-colors rounded-lg hover:bg-gray-50"
                       onClick={(e) => {
                         e.preventDefault()
                         setIsMobileMenuOpen(false)
@@ -170,11 +155,14 @@ export default function Navigation() {
                   ))}
                 </nav>
 
-                <Button asChild className="bg-[#0071E3] hover:bg-[#0051D5] text-white rounded-full mt-4 text-[14px] font-normal">
-                  <a href="https://wa.me/6285161912446" target="_blank" rel="noopener noreferrer">
-                    Get Started
-                  </a>
-                </Button>
+                {/* CTA Button at bottom */}
+                <div className="mt-auto pt-6">
+                  <Button asChild className="w-full bg-[#0071E3] hover:bg-[#0051D5] text-white rounded-full text-[15px] font-normal h-12">
+                    <a href="https://wa.me/6285161912446" target="_blank" rel="noopener noreferrer">
+                      Get Started
+                    </a>
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>

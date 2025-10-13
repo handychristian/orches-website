@@ -1,7 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import ScenarioDemo from '@/components/scenario-demo'
+import dynamic from 'next/dynamic'
+import { InteractiveSkeleton } from '@/components/loading/component-skeleton'
+
+const ScenarioDemo = dynamic(() => import('@/components/scenario-demo'), {
+  loading: () => <InteractiveSkeleton />,
+  ssr: false
+})
 import { Users, Truck, BarChart3, MessageCircle, Package, ChevronRight } from 'lucide-react'
 
 const bots = [
