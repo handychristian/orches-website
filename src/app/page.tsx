@@ -5,8 +5,8 @@ import Navigation from '@/components/navigation'
 import HeroV4 from '@/components/hero-v4'
 import TrustBadges from '@/components/trust-badges'
 import IntegrationProblemCompact from '@/components/integration-problem-compact'
+import AutomationAssessment from '@/components/automation-assessment'
 import IntegrationLogos from '@/components/integration-logos'
-import HowItWorksCompact from '@/components/how-it-works-compact'
 import LazySection from '@/components/loading/lazy-section'
 import { InteractiveSkeleton } from '@/components/loading/component-skeleton'
 // Changed from dynamic imports to regular imports to fix nested scroll issue
@@ -28,7 +28,7 @@ export default function Home() {
       <HeroV4 />
       <TrustBadges />
       <IntegrationProblemCompact />
-      <HowItWorksCompact />
+      <AutomationAssessment />
 
       {/* Lazy loaded interactive demo section */}
       <LazySection fallback={<InteractiveSkeleton />}>

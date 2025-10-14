@@ -7,10 +7,10 @@ import { GraduationCap, Target, Rocket, Gift, BookOpen, Building } from 'lucide-
 const learningOption = {
   id: 'ai-learning',
   icon: BookOpen,
-  badge: 'AI LEARNING PATH',
-  badgeColor: 'bg-blue-500',
+  badge: 'COMING SOON',
+  badgeColor: 'bg-orange-500',
   title: 'Komunitas Belajar AI OrchesAI',
-  subtitle: 'Alternative untuk yang mau belajar step-by-step',
+  subtitle: 'Program learning sedang kami persiapkan',
   features: [
     'Pahami dasar-dasar AI & kemungkinan yang bisa dilakukan',
     'Praktek langsung pakai AI tools & automation',
@@ -18,9 +18,9 @@ const learningOption = {
     'Buat AI assistant pertama kamu step-by-step',
     'Join komunitas AI enthusiasts & learners Indonesia'
   ],
-  cta: 'Tanya-tanya Komunitas Belajar',
-  ctaStyle: 'bg-blue-600 hover:bg-blue-700 text-white',
-  href: 'https://wa.me/6285161912446'
+  cta: 'Join Waitlist & Tanya-tanya',
+  ctaStyle: 'bg-orange-600 hover:bg-orange-700 text-white',
+  href: 'https://wa.me/6285161912446?text=Halo,%20saya%20tertarik%20join%20waitlist%20untuk%20program%20belajar%20AI'
 }
 
 export default function EducationBridge() {
@@ -60,7 +60,7 @@ export default function EducationBridge() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-gray-600 text-sm md:text-base lg:text-lg max-w-3xl mx-auto leading-relaxed px-4 md:px-0 break-words"
           >
-            Kalau belum siap invest besar, <span className="font-semibold text-gray-900">atau mungkin mau belajar AI dulu</span>, kami juga punya komunitas belajar yang bisa jadi alternative
+            Kalau belum siap invest besar, <span className="font-semibold text-gray-900">atau mungkin mau belajar AI dulu</span>, kami sedang persiapkan program learning yang bisa jadi alternative
           </motion.p>
         </div>
 
@@ -130,11 +130,11 @@ export default function EducationBridge() {
           className="text-center"
         >
           <p className="text-gray-600 text-base md:text-lg font-medium px-4 md:px-0">
-            "Gak masalah mau mulai dari mana. Yang penting comfortable sama pace-nya"
+            "Join waitlist sekarang & dapatkan early access + special price"
           </p>
           <div className="mt-4 flex items-center justify-center gap-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <span className="text-xs md:text-sm text-blue-700 font-medium">Komunitas, bukan kelas formal 🤝</span>
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+            <span className="text-xs md:text-sm text-orange-700 font-medium">Program launching soon ⏰</span>
           </div>
         </motion.div>
       </div>
