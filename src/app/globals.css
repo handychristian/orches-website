@@ -135,7 +135,6 @@
   /* Ensure all sections respect viewport */
   section {
     max-width: 100vw;
-    overflow-x: hidden;
   }
 
   /* Mobile-specific fixes */
